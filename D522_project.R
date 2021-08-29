@@ -70,3 +70,13 @@ plot(hpi5$year_quarter,hpi5$index_sa, type ='l',xlab = ' year & quarter', ylab =
 grid(NA, 6, lwd = 1) # grid only in y-direction
 
 # multiple lines in one chart
+fhfa_hpi <-data.frame(hpi2$year_quarter,hpi2$index_sa,hpi3$index_sa,hpi4$index_sa,hpi5$index_sa)
+                 
+#dat <- matrix(runif(40,1,20),ncol=4) # make data
+matplot(fhfa_hpi[1],fhfa_hpi[2:5], type = c("l"),lwd = 2,col = 1:4, xlab='Year', ylab='FHFA HPI') #plot
+legend("topleft", legend = c('New York','Washington D.C.','Charlotte','San Fransisico'), col=1:4, pch=1) # optional legend
+grid(NA, 6, lwd = 1) # grid only in y-direction
+
+matplot(fhfa_hpi[1],fhfa_hpi[2:5], type = c("l"),lwd = 2,col = 1:4, xlab='日期', ylab='FHFA 房价指数') #plot
+legend("topleft", legend = c('纽约','华盛顿','夏洛特','旧金山'), col=1:4, pch=1) # optional legend
+

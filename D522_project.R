@@ -1,12 +1,16 @@
 
 # FHFA HPI
 # Aug 2021
-# new change
+
 
 # import data
-library(readxl)
-#hpi <- read.csv("D:/0_0 Careers/2019/1910 UoNA/2107 Data 522/Project/HPI_master.csv")
-hpi <- read.csv("D:/Data/HPI_master.csv")
+# library(readxl)
+# hpi <- read.csv("D:/0_0 Careers/2019/1910 UoNA/2107 Data 522/Project/HPI_master.csv")
+
+urlfile= "https://raw.githubusercontent.com/wx2123/FHFA_HPI/master/HPI_master.csv"
+
+hpi<-read_csv(url(urlfile))
+#hpi <- read.csv("D:/Data/HPI_master.csv")
 
 # explore the data
 names(hpi)
@@ -65,3 +69,4 @@ plot(hpi5$year_quarter,hpi5$index_sa, type ='l',xlab = ' year & quarter', ylab =
      main = 'San Francisco-San Mateo-Redwood City, CA (MSAD)')
 grid(NA, 6, lwd = 1) # grid only in y-direction
 
+# multiple lines in one chart

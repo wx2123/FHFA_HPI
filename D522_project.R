@@ -29,7 +29,7 @@ summary(hpi)
 library(dplyr)
 hpi1 <- hpi %>%
   # mutate(year_quarter = paste(yr,'Q',period))
-  mutate(year_quarter = yr + 3 * period/10)
+  mutate(year_quarter = yr + period/4.001)
 
 # visualization
 hpi2 <- hpi1 %>%
@@ -62,7 +62,6 @@ plot(hpi4$year_quarter,hpi4$index_sa, type ='l',xlab = ' year & quarter', ylab =
 grid(NA, 6, lwd = 1) # grid only in y-direction
 
 
-
 hpi5 <- hpi1 %>%
   filter(!is.na(index_sa), 
          hpi_flavor == 'purchase-only',
@@ -72,7 +71,6 @@ hpi5 <- hpi1 %>%
 plot(hpi5$year_quarter,hpi5$index_sa, type ='l',xlab = ' year & quarter', ylab = 'HPI',
      main = 'San Francisco-San Mateo-Redwood City, CA (MSAD)')
 grid(NA, 6, lwd = 1) # grid only in y-direction
-
 
 
 # multiple lines in one chart
@@ -89,19 +87,20 @@ legend("topleft", legend = c('纽约','华盛顿','夏洛特','旧金山'), col=
 install.packages("forecast")
 library(forecast)
 
-barplot()
+barplot(diff(fhfa_hpi[,2]), type = c("l"),ylab='', main='New York HPI Difference (Lag = 1)')
+abline (a = 0 , b = 0)
 
-barplot(diff(fhfa_hpi[,2]), type = c("l"),ylab='', main='New York HPI Difference')
+barplot(diff(fhfa_hpi[,2],2,2), type = c("l"),ylab='', main='New York HPI Difference (Lag = 2)')
 abline (a = 0 , b = 0)
 
 # examine ACF and PACF of difftrenced ser ~s 
-acf(diff (fhfa_hpi[,2]), xaxp = c(0, 120, 4), lag.max=120, main= " " ) 
-pacf(diff (fhfa_hpi[,2]) , xaxp = c(0,120,4) , lag.max=120 , main='"' )
+acf(diff (fhfa_hpi[,2],2,2), xaxp = c(0, 120, 4), lag.max=120, main= " " ) 
+pacf(diff (fhfa_hpi[,2],2,2) , xaxp = c(0,120,4) , lag.max=120 , main='' )
 
-arima_1 <- arima(fhfa_hpi[,2],order=c(0,1,0))
+arima_1 <- arima(fhfa_hpi[,2],order=c(0,2,0), seasonal=list(order=c(1,0,0),period=12))
 arima_1
 
-arima_2 <- arima(fhfa_hpi[,2],order=c(0,1,1))
+arima_2 <- arima(fhfa_hpi[,2],order=c(0,2,1), seasonal=list(order=c(1,0,0),period=12))
 arima_2
 
 barplot(arima_2$residuals,ylab = "Residuals")
@@ -117,7 +116,7 @@ arima_2.predict <- predict(arima_2,n.ahead=12)
 m <- matrix(c(arima_2.predict$pred - 1.96 * arima_2.predict$se,
          arima_2.predict$pred,
          arima_2.predict$pred + 1.96 * arima_2.predict$se),12,3,
-        dimnames = list(c(121:132), c("LB","Pred","UB")))
+        dimnames = list(c(121:132), c("Low_Bound","Predict","Upper_Bound")))
 m
 
 plot(fhfa_hpi[,2], xlim=c(1,132),  xlab = "Time (quarters)", 

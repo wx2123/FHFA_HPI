@@ -89,9 +89,9 @@ legend("topleft", legend = c('纽约','华盛顿','夏洛特','旧金山'), col=
 install.packages("forecast")
 library(forecast)
 
-a <- ts()
+barplot()
 
-plot(diff(fhfa_hpi[,2]), type = c("l"))
+barplot(diff(fhfa_hpi[,2]), type = c("l"),ylab='', main='New York HPI Difference')
 abline (a = 0 , b = 0)
 
 # examine ACF and PACF of difftrenced ser ~s 
@@ -104,7 +104,7 @@ arima_1
 arima_2 <- arima(fhfa_hpi[,2],order=c(0,1,1))
 arima_2
 
-plot(arima_2$residuals,ylab = "Residuals")
+barplot(arima_2$residuals,ylab = "Residuals")
 abline(a = 0, b = 0)
 
 hist(arima_2$residuals, xlab = "Residuals", xlim = c(-15,15))
@@ -114,13 +114,14 @@ qqline(arima_2$residuals)
 
 # predict the next 3 years(12 quarters)
 arima_2.predict <- predict(arima_2,n.ahead=12)
-matrix(c(arima_2.predict$pred - 1.96 * arima_2.predict$se,
+m <- matrix(c(arima_2.predict$pred - 1.96 * arima_2.predict$se,
          arima_2.predict$pred,
          arima_2.predict$pred + 1.96 * arima_2.predict$se),12,3,
         dimnames = list(c(121:132), c("LB","Pred","UB")))
+m
 
 plot(fhfa_hpi[,2], xlim=c(1,132),  xlab = "Time (quarters)", 
-                   ylim=c(100,400),ylab = "NYC_FHFA_HPI",type = c("l") )
+                   ylim=c(100,400),ylab='', main = "New York FHFA HPI",type = c("l") )
 
 #plot(fhfa_hpi[,2],  xlab = "Time (quarters)", ylab = "NYC_FHFA_HPI" )
 lines(arima_2.predict$pred)

@@ -100,10 +100,13 @@ pacf(diff (fhfa_hpi[,2],2,2) , xaxp = c(0,120,4) , lag.max=120 , main='' )
 arima_1 <- arima(fhfa_hpi[,2],order=c(0,2,0), seasonal=list(order=c(1,0,0),period=12))
 arima_1
 
-arima_2 <- arima(fhfa_hpi[,2],order=c(0,2,1), seasonal=list(order=c(1,0,0),period=12))
+#arima_2 <- arima(fhfa_hpi[,2],order=c(1,2,1), seasonal=list(order=c(1,0,0),period=12))
+arima_2 <- arima(fhfa_hpi[,2],order=c(1,2,1))
 arima_2
+arima_ny_fhfa_hpi <- arima_2
+arima_ny_fhfa_hpi
 
-barplot(arima_2$residuals,ylab = "Residuals")
+plot(arima_2$residuals,ylab = "Residuals")
 abline(a = 0, b = 0)
 
 hist(arima_2$residuals, xlab = "Residuals", xlim = c(-15,15))
@@ -117,7 +120,11 @@ m <- matrix(c(arima_2.predict$pred - 1.96 * arima_2.predict$se,
          arima_2.predict$pred,
          arima_2.predict$pred + 1.96 * arima_2.predict$se),12,3,
         dimnames = list(c(121:132), c("Low_Bound","Predict","Upper_Bound")))
-m
+mm <- as.data.frame(m)
+
+library("writexl")
+write_xlsx(mm,"D:\\0_0 Careers\\2019\\1910 UoNA\\2107 Data 522\\class_project\\predict.xlsx")
+
 
 plot(fhfa_hpi[,2], xlim=c(1,132),  xlab = "Time (quarters)", 
                    ylim=c(100,400),ylab='', main = "New York FHFA HPI",type = c("l") )

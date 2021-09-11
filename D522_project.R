@@ -69,6 +69,7 @@ plot(hpi5$year_quarter,hpi5$index_sa, type ='l',xlab = ' year & quarter', ylab =
      main = 'San Francisco-San Mateo-Redwood City, CA (MSAD)')
 grid(NA, 6, lwd = 1) # grid only in y-direction
 
+
 # multiple lines in one chart
 fhfa_hpi <-data.frame(hpi2$year_quarter,hpi2$index_sa,hpi3$index_sa,hpi4$index_sa,hpi5$index_sa)
                  

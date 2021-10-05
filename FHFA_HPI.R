@@ -3,7 +3,6 @@
 # Aug 2021
 
 
-
 # Clean all objects from the current workspace (R memory) 
 rm(list=ls())
 
@@ -20,7 +19,6 @@ head(hpi)
 tail(hpi)
 anyNA(hpi)
 str(hpi)
-
 summary(hpi)
 
 library(dplyr)
@@ -37,7 +35,6 @@ hpi2 <- hpi1 %>%
 plot(hpi2$year_quarter,hpi2$index_sa, type ='l',xlab = ' year & quarter', ylab = 'HPI',
      main = 'New York-Jersey City-White Plains, NY-NJ (MSAD)')
 grid(NA, 6, lwd = 1) # grid only in y-direction
-
 
 hpi3 <- hpi1 %>%
   filter(!is.na(index_sa), 
@@ -68,7 +65,6 @@ hpi5 <- hpi1 %>%
 plot(hpi5$year_quarter,hpi5$index_sa, type ='l',xlab = ' year & quarter', ylab = 'HPI',
      main = 'San Francisco-San Mateo-Redwood City, CA (MSAD)')
 grid(NA, 6, lwd = 1) # grid only in y-direction
-
 
 
 hpi6 <- hpi1 %>%
@@ -143,16 +139,4 @@ plot(fhfa_hpi[,2], xlim=c(1,132),  xlab = "Time (quarters)",
 lines(arima_2.predict$pred)
 lines(arima_2.predict$pred + 1.96 * arima_2.predict$se, col = 4, lty = 2)
 lines(arima_2.predict$pred - 1.96 * arima_2.predict$se, col = 4, lty = 2)
-
-
-
-         
-
-
-
-
-
-
-matplot(fhfa_hpi[1],diff(fhfa_hpi[,2]))
-legend("topleft", legend = c('New York')) # optional legend
-grid(NA, 6, lwd = 1) # grid only in y-direction
+  

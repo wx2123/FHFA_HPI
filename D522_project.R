@@ -3,18 +3,15 @@
 # Aug 2021
 
 
-# import data
-
-# hpi <- read.csv("D:/0_0 Careers/2019/1910 UoNA/2107 Data 522/Project/HPI_master.csv")
 
 # Clean all objects from the current workspace (R memory) 
 rm(list=ls())
 
+# import data
 library(tidyverse)
 #library(readxl)
 urlfile= "https://raw.githubusercontent.com/wx2123/FHFA_HPI/master/HPI_master.csv"
 hpi <- read_csv(url(urlfile))
-#hpi <- read.csv("D:/Data/HPI_master.csv")
 
 # explore the data
 names(hpi)
@@ -73,18 +70,31 @@ plot(hpi5$year_quarter,hpi5$index_sa, type ='l',xlab = ' year & quarter', ylab =
 grid(NA, 6, lwd = 1) # grid only in y-direction
 
 
+
+hpi6 <- hpi1 %>%
+  filter(!is.na(index_sa), 
+         hpi_flavor == 'purchase-only',
+         hpi_type   == 'traditional',
+         place_name == 'Atlanta-Sandy Springs-Alpharetta, GA')
+
+plot(hpi6$year_quarter,hpi6$index_sa, type ='l',xlab = ' year & quarter', ylab = 'HPI',
+     main = 'Atlanta-Sandy Springs-Alpharetta, GA')
+grid(NA, 6, lwd = 1) # grid only in y-direction
+
+
+
 # multiple lines in one chart
-fhfa_hpi <-data.frame(hpi2$year_quarter,hpi2$index_sa,hpi3$index_sa,hpi4$index_sa,hpi5$index_sa)
+fhfa_hpi <-data.frame(hpi2$year_quarter,hpi2$index_sa,hpi3$index_sa,hpi4$index_sa,hpi5$index_sa,hpi6$index_sa)
                  
 #dat <- matrix(runif(40,1,20),ncol=4) # make data
-matplot(fhfa_hpi[1],fhfa_hpi[2:5], type = c("l"),lwd = 2,col = 1:4, xlab='Year', ylab='FHFA HPI') #plot
-legend("topleft", legend = c('New York','Washington D.C.','Charlotte','San Fransisico'), col=1:4, pch=1) # optional legend
+matplot(fhfa_hpi[1],fhfa_hpi[2:6], type = c("l"),lwd = 2,col = 1:5, xlab='Year', ylab='FHFA HPI') #plot
+legend("topleft", legend = c('New York','Washington D.C.','Charlotte','San Fransisico','Atlanta'), col=1:5, pch=1) # optional legend
 grid(NA, 6, lwd = 1) # grid only in y-direction
 
 matplot(fhfa_hpi[1],fhfa_hpi[2:5], type = c("l"),lwd = 2,col = 1:4, xlab='日期', ylab='FHFA 房价指数') #plot
 legend("topleft", legend = c('纽约','华盛顿','夏洛特','旧金山'), col=1:4, pch=1) # optional legend
 
-install.packages("forecast")
+# install.packages("forecast")
 library(forecast)
 
 barplot(diff(fhfa_hpi[,2]), type = c("l"),ylab='', main='New York HPI Difference (Lag = 1)')
